@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact — Betips</title>
+  <link rel="icon" type="image/png" href="images/betips_logo.png" />
+
+  <style>
+    :root{
+      --bg:#070b16; --grad1:#0b1024; --grad2:#0a1533;
+      --panel:#0f1a34; --panel-2:#0c1429;
+      --ink:#e6edff; --muted:#9fb1d9; --brand:#61c3ff; --accent:#7dd3fc;
+      --stroke:rgba(171,197,255,.15); --shadow:0 12px 30px rgba(0,0,0,.35);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(0,213,255,.12), transparent 60%),
+        radial-gradient(1000px 700px at 100% 0%, rgba(99,102,241,.12), transparent 60%),
+        linear-gradient(180deg, var(--grad1), var(--grad2));
+    }
+
+    /* Header */
+    .hero{position:sticky;top:0;z-index:5;backdrop-filter:blur(10px);
+      background:linear-gradient(180deg,rgba(9,13,28,.85),rgba(9,13,28,.35));
+      border-bottom:1px solid var(--stroke);}
+    .hero-inner{max-width:1080px;margin:0 auto;padding:12px 16px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px;
+      color:var(--accent);text-decoration:none;}
+    .brand .logo{width:36px;height:36px;border-radius:12px;
+      background:linear-gradient(135deg,#1f8cff,#7dd3fc);
+      display:grid;place-items:center;color:#081222;font-weight:900;
+      box-shadow:0 6px 16px rgba(33,150,243,.35);}
+    nav ul{display:flex;list-style:none;margin:0;padding:0;gap:18px;}
+    nav a{color:var(--ink);text-decoration:none;font-size:14px;transition:.2s;}
+    nav a:hover{color:var(--accent)}
+
+    /* Content */
+    .wrap{max-width:900px;margin:28px auto;padding:0 18px;}
+    h1{font-size:26px;margin-bottom:12px;color:var(--brand);}
+    p{line-height:1.6;color:var(--ink);margin:12px 0;}
+    .info{margin:18px 0;padding:16px;border:1px solid var(--stroke);
+      border-radius:var(--radius);background:linear-gradient(180deg,var(--panel),var(--panel-2));
+      box-shadow:var(--shadow);}
+    .info p{margin:6px 0;font-size:15px}
+    .info strong{color:var(--accent)}
+
+    /* Form */
+    form{margin-top:20px;display:grid;gap:14px;}
+    input,textarea,button{
+      width:100%;padding:12px 14px;border-radius:12px;
+      border:1px solid var(--stroke);background:#0d1a33;color:var(--ink);font-size:15px;
+    }
+    textarea{min-height:120px}
+    button{cursor:pointer;background:linear-gradient(180deg,#1e88e5,#1669c1);border:none;box-shadow:var(--shadow)}
+    button:hover{opacity:.9}
+
+    /* Footer */
+    footer{margin-top:40px;padding:20px 16px;border-top:1px solid var(--stroke);
+      font-size:13px;color:var(--muted);text-align:center;background:rgba(0,0,0,.2);}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="hero">
+    <div class="hero-inner">
+      <a class="brand" href="index.html">
+        <div class="logo">BT</div>
+        <div>Betips</div>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Page Content -->
+  <div class="wrap">
+    <h1>Contact Us</h1>
+    <p>We’d love to hear from you. For questions, suggestions, or business inquiries, reach out using the details below or send us a WhatsApp message.</p>
+
+    <div class="info">
+      <p><strong>Company:</strong> Nkomazi Digital</p>
+      <p><strong>Phone:</strong> <a href="tel:0823695623" style="color:inherit">082 369 5623</a></p>
+      <p><strong>Email:</strong> <a href="mailto:digitalnkomazi@gmail.com" style="color:inherit">digitalnkomazi@gmail.com</a></p>
+    </div>
+
+    <!-- WhatsApp Form -->
+    <form onsubmit="sendWhatsApp(event)">
+      <input id="name" type="text" placeholder="Your Name" required />
+      <input id="email" type="email" placeholder="Your Email" required />
+      <textarea id="message" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 Betips / Nkomazi Digital. All rights reserved.
+  </footer>
+
+  <script>
+    function sendWhatsApp(e){
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+
+      const text = `📩 New Message from Betips:\n\n👤 Name: ${name}\n📧 Email: ${email}\n💬 Message: ${message}`;
+      const url = `https://wa.me/27823695623?text=${encodeURIComponent(text)}`;
+
+      window.open(url, '_blank'); // opens WhatsApp
+    }
+  </script>
+</body>
+</html>
+

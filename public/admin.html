@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bet Tips — Admin</title>
+  <style>
+    :root{
+      --bg:#0b1220; --panel:#0f1a34; --panel-2:#0c1429; --ink:#e6edff; --muted:#a9b6d8; --brand:#38bdf8;
+      --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444; --stroke:rgba(180,205,255,.14); --shadow:0 10px 24px rgba(0,0,0,.28);
+      --radius:16px; --space:16px; --space-lg:18px;
+      --cat-basic:#16a34a; --cat-good:#2563eb; --cat-adv:#d97706;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,#0b1220,#0e1832 40%,#0b1220);
+      color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+
+    header{display:flex;gap:12px;align-items:center;justify-content:space-between;
+      padding:14px;border-bottom:1px solid var(--stroke);
+      position:sticky;top:0;background:#0b1220cc;backdrop-filter:blur(8px);z-index:10}
+    header h1{margin:0;font-size:18px;color:var(--brand);letter-spacing:.3px}
+    header .right{display:flex;gap:10px;align-items:center}
+
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;user-select:none;
+      color:#7dd3fc;font-weight:800;letter-spacing:.2px;}
+    .brand .logo{width:34px;height:34px;border-radius:10px;
+      background:linear-gradient(135deg,#1f8cff,#7dd3fc);
+      display:grid;place-items:center;color:#081222;font-weight:900;
+      box-shadow:0 6px 16px rgba(33,150,243,.35);}
+
+    button, input, select, textarea{
+      border-radius:12px;border:1px solid var(--stroke);
+      background:#0d1a33;color:var(--ink);padding:12px 14px;font-size:15px
+    }
+    button{cursor:pointer;border-color:transparent;background:#172448;box-shadow:var(--shadow)}
+    button.primary{background:linear-gradient(180deg,#1e88e5,#1669c1);border:none}
+    button.ghost{background:transparent;border:1px dashed var(--stroke)}
+    button.danger{background:#3b1f26;border:1px solid rgba(239,68,68,.35)}
+
+    main{max-width:1100px;margin:14px auto;padding:0 12px;
+      display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .card{background:linear-gradient(180deg,var(--panel),var(--panel-2));
+      border:1px solid var(--stroke);border-radius:var(--radius);box-shadow:var(--shadow);width:100%}
+    .card header{position:unset;background:transparent;border:none;padding:var(--space-lg)}
+    .card .content{padding:var(--space-lg)}
+
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
+    input, select, textarea{width:100%}
+    textarea{min-height:110px}
+    .small{font-size:12px;color:var(--muted)}
+    .switch{display:flex;align-items:center;gap:8px;margin-top:8px}
+
+    table{width:100%;border-collapse:collapse}
+    th, td{padding:12px;border-bottom:1px solid var(--stroke);text-align:left;font-size:14px}
+    th{color:var(--muted);font-weight:600}
+    .pill{font-size:11px;border-radius:999px;padding:4px 8px;background:#14203f;
+      border:1px solid var(--stroke);color:var(--muted);white-space:nowrap}
+    .pill.basic{background:#052e16;border-color:#166534;color:var(--cat-basic)}
+    .pill.good{background:#172554;border-color:#1e40af;color:var(--cat-good)}
+    .pill.adv{background:#451a03;border-color:#92400e;color:var(--cat-adv)}
+    .status-published{background:#0f2e1b;border-color:#1a4d2a;color:#8ee6ae}
+    .status-draft{background:#2a1a0f;border-color:#4d2a1a;color:#f5cf9a}
+    .table-wrap{overflow:auto;border:1px solid var(--stroke);border-radius:12px}
+    .table-wrap table{min-width:780px}
+    tr.highlight{animation: flash 1.4s ease}
+    @keyframes flash{0%{background:#15304f}100%{background:transparent}}
+
+    .toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);
+      background:#0c1a34;border:1px solid var(--stroke);color:var(--ink);
+      padding:10px 14px;border-radius:12px;box-shadow:var(--shadow);display:none;z-index:50}
+
+    #login{max-width:520px;margin:8vh auto;padding:var(--space-lg)}
+    #app{display:none}
+    .sep{height:1px;background:var(--stroke);margin:12px 0}
+
+    @media (max-width: 960px){main{grid-template-columns:1fr}}
+    @media (max-width: 640px){
+      header{padding:12px;flex-wrap:wrap}
+      .card header,.card .content{padding:14px}
+      .row,.row3{grid-template-columns:1fr}
+      button, input, select, textarea{font-size:16px;padding:13px 14px;width:100%}
+      th, td{padding:10px}
+      .table-wrap{border:none}
+      table{display:block}
+      thead{display:none}
+      tbody{display:grid;gap:12px}
+      tbody tr{display:grid;gap:8px;padding:12px;border:1px solid var(--stroke);border-radius:12px;
+        background:linear-gradient(180deg,#0e1832,#0b142a)}
+      tbody td{border:none;padding:4px 0;font-size:15px}
+      tbody td::before{content: attr(data-label);display:block;font-size:12px;color:var(--muted);margin-bottom:2px}
+      tbody td.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="index.html" aria-label="Go to Home">
+      <div class="logo">BT</div>
+      <span>Home</span>
+    </a>
+    <div class="right">
+      <span id="who" class="small"></span>
+      <button id="signOutBtn" class="ghost">Sign out</button>
+    </div>
+  </header>
+
+  <!-- LOGIN -->
+  <section id="login" class="card">
+    <header><h2>Admin Login</h2>
+      <p class="small">Use your admin email & password. Only approved emails can write.</p></header>
+    <div class="content">
+      <div class="row">
+        <div><label>Email</label><input id="email" type="email" /></div>
+        <div><label>Password</label><input id="password" type="password" /></div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <button id="loginBtn" class="primary">Sign in</button>
+        <button id="signupBtn" class="ghost">Create account</button>
+        <span id="authMsg" class="small"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- APP -->
+  <main id="app">
+    <section class="card">
+      <header><h3 id="formTitle">Create Fixture</h3></header>
+      <div class="content">
+        <div class="row">
+          <div><label>League/Competition</label><input id="league" /></div>
+          <div><label>Match Date & Time</label><input id="when" type="datetime-local" /></div>
+        </div>
+        <div class="row">
+          <div><label>Home Team</label><input id="home" /></div>
+          <div><label>Away Team</label><input id="away" /></div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Category</label>
+            <select id="category">
+              <option value="basic">Basic (5 odds and below)</option>
+              <option value="good">Good (7 odds and below)</option>
+              <option value="advanced">Advanced (10 odds and above)</option>
+            </select>
+          </div>
+        </div>
+        <div class="sep"></div>
+        <div class="row3">
+          <div><label>Basic Tip #1</label><input id="basic1" /></div>
+          <div><label>Basic Tip #2</label><input id="basic2" /></div>
+          <div><label>Basic Tip #3</label><input id="basic3" /></div>
+        </div>
+        <label style="margin-top:10px">Advanced Tips (one per line)</label>
+        <textarea id="advanced" rows="5"></textarea>
+        <div class="switch"><input id="featured" type="checkbox" /> <label for="featured">Mark as Featured</label></div>
+        <div class="switch"><input id="published" type="checkbox" checked /> <label for="published">Published</label></div>
+        <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+          <button id="saveBtn" class="primary">Save Fixture</button>
+          <button id="resetBtn" class="ghost">Reset</button>
+          <span id="formMsg" class="small"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <header><h3>Fixtures</h3></header>
+      <div class="content">
+        <div class="table-wrap">
+          <table id="fixturesTable">
+            <thead><tr><th>Date</th><th>Match</th><th>League</th><th>Category</th><th>Status</th><th>Featured</th><th></th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast">Saved ✅</div>
+
+  <!-- Firebase Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, doc, updateDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBdBzu5_KOTZ_RPYIl8mz0c9YU5Jnz2dkg",
+      authDomain: "tips-b54a9.firebaseapp.com",
+      projectId: "tips-b54a9",
+      storageBucket: "tips-b54a9.firebasestorage.app",
+      messagingSenderId: "348689685199",
+      appId: "1:348689685199:web:79fc1fe51cea6107eff5ba"
+    };
+    const ALLOWED_ADMINS = ["sbusisothando67@gmail.com"];
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const loginCard=document.getElementById('login'), appMain=document.getElementById('app'), who=document.getElementById('who');
+    const emailEl=document.getElementById('email'), passEl=document.getElementById('password'), loginBtn=document.getElementById('loginBtn'), signupBtn=document.getElementById('signupBtn'), authMsg=document.getElementById('authMsg'), signOutBtn=document.getElementById('signOutBtn');
+    const formTitle=document.getElementById('formTitle'), leagueEl=document.getElementById('league'), whenEl=document.getElementById('when'), homeEl=document.getElementById('home'), awayEl=document.getElementById('away'),
+      categoryEl=document.getElementById('category'),
+      basic1El=document.getElementById('basic1'), basic2El=document.getElementById('basic2'), basic3El=document.getElementById('basic3'), advEl=document.getElementById('advanced'),
+      featuredEl=document.getElementById('featured'), publishedEl=document.getElementById('published'),
+      saveBtn=document.getElementById('saveBtn'), resetBtn=document.getElementById('resetBtn'),
+      formMsg=document.getElementById('formMsg'), rows=document.getElementById('rows'), fixturesTable=document.getElementById('fixturesTable'), toast=document.getElementById('toast');
+    let editingId=null, lastSavedId=null;
+
+    // ---------- Auth ----------
+    onAuthStateChanged(auth,(user)=>{
+      if(user && ALLOWED_ADMINS.includes(user.email)){
+        who.textContent=user.email; loginCard.style.display='none'; appMain.style.display='grid'; authMsg.textContent='';
+      }else if(user && !ALLOWED_ADMINS.includes(user.email)){
+        who.textContent=''; appMain.style.display='none'; loginCard.style.display='block'; authMsg.textContent='Not allowed'; signOut(auth);
+      }else{
+        who.textContent=''; appMain.style.display='none'; loginCard.style.display='block';
+      }
+    });
+    loginBtn.onclick=async()=>{authMsg.textContent='Signing in…'; try{await signInWithEmailAndPassword(auth,emailEl.value.trim(),passEl.value); authMsg.textContent='';}catch(e){authMsg.textContent=e.message;}};
+    signupBtn.onclick=async()=>{authMsg.textContent='Creating…'; try{await createUserWithEmailAndPassword(auth,emailEl.value.trim(),passEl.value); authMsg.textContent='Account created';}catch(e){authMsg.textContent=e.message;}};
+    signOutBtn.onclick=()=>signOut(auth);
+
+    // ---------- Fixtures ----------
+    const qFixtures=query(collection(db,'fixtures'), orderBy('when','asc'));
+    onSnapshot(qFixtures,(snap)=>{
+      const items=[]; snap.forEach(docu=>items.push({id:docu.id, ...docu.data()}));
+      items.sort((a,b)=>(b.featured===true)-(a.featured===true) || (toMillis(a.when)-toMillis(b.when)));
+
+      rows.innerHTML='';
+      for(const f of items){
+        const tr=document.createElement('tr'); tr.dataset.id=f.id;
+        const whenMillis=toMillis(f.when), whenTxt=whenMillis?formatLocal(whenMillis):'';
+        const cat=f.category||'basic';
+        tr.innerHTML=`
+          <td data-label="Date">${whenTxt}</td>
+          <td data-label="Match">${escapeHtml(f.home)} <span class="small" style="opacity:.7">vs</span> ${escapeHtml(f.away)}</td>
+          <td data-label="League">${escapeHtml(f.league||'')}</td>
+          <td data-label="Category"><span class="pill ${cat}">${cat.charAt(0).toUpperCase()+cat.slice(1)}</span></td>
+          <td data-label="Status"><span class="pill ${f.published?'status-published':'status-draft'}">${f.published?'Published':'Draft'}</span></td>
+          <td data-label="Featured">${f.featured?'⭐️ Yes':'—'}</td>
+          <td class="actions" data-label="Actions">
+            <button data-id="${f.id}" class="edit">Edit</button>
+            <button data-id="${f.id}" class="toggle">${f.published?'Unpublish':'Publish'}</button>
+            <button data-id="${f.id}" class="danger delete">Delete</button>
+          </td>`;
+        rows.appendChild(tr);
+      }
+      bindRowActions();
+      if(lastSavedId){
+        const tr=rows.querySelector(`tr[data-id="${lastSavedId}"]`);
+        if(tr){ tr.classList.add('highlight'); tr.scrollIntoView({behavior:'smooth', block:'center'}); }
+        lastSavedId=null;
+      }
+    });
+
+    function bindRowActions(){
+      rows.querySelectorAll('button.edit').forEach(btn=>btn.onclick=()=>loadForEdit(btn.dataset.id));
+      rows.querySelectorAll('button.toggle').forEach(btn=>btn.onclick=()=>togglePublish(btn.dataset.id));
+      rows.querySelectorAll('button.delete').forEach(btn=>btn.onclick=()=>removeFixture(btn.dataset.id));
+    }
+
+    async function loadForEdit(id){
+      const dref=doc(db,'fixtures',id); const snap=await getDoc(dref); const f=snap.data();
+      editingId=id; formTitle.textContent='Edit Fixture';
+      leagueEl.value=f.league||''; whenEl.value=f.when?toInputDate(new Date(toMillis(f.when))):'';
+      homeEl.value=f.home||''; awayEl.value=f.away||'';
+      categoryEl.value=f.category||'basic';
+      basic1El.value=f.basic?.[0]||''; basic2El.value=f.basic?.[1]||''; basic3El.value=f.basic?.[2]||''; advEl.value=(f.advanced||[]).join('\n');
+      featuredEl.checked=!!f.featured; publishedEl.checked=!!f.published;
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    async function togglePublish(id){
+      const dref=doc(db,'fixtures',id); const snap=await getDoc(dref); const f=snap.data();
+      await updateDoc(dref,{ published: !f.published });
+    }
+
+    async function removeFixture(id){
+      if(!confirm('Delete this fixture?')) return;
+      await deleteDoc(doc(db,'fixtures',id));
+      if(editingId===id) resetForm();
+    }
+
+    saveBtn.onclick=async()=>{
+      const payload=collectForm(); if(!payload) return;
+      try{
+        formMsg.textContent=editingId?'Updating…':'Saving…';
+        if(editingId){
+          await updateDoc(doc(db,'fixtures',editingId), payload);
+          lastSavedId=editingId;
+        }else{
+          const ref=await addDoc(collection(db,'fixtures'), { ...payload, createdAt: serverTimestamp() });
+          lastSavedId=ref.id;
+        }
+        formMsg.textContent=''; showToast('Saved ✅'); resetForm();
+        fixturesTable.scrollIntoView({behavior:'smooth', block:'start'});
+      }catch(e){ formMsg.textContent=e.message; }
+    };
+    resetBtn.onclick=resetForm;
+
+    function collectForm(){
+      const league=leagueEl.value.trim();
+      const when=whenEl.value ? new Date(whenEl.value).getTime() : null;
+      const home=homeEl.value.trim(), away=awayEl.value.trim();
+      const category=categoryEl.value;
+      const basic=[basic1El.value, basic2El.value, basic3El.value].map(s=>s.trim()).filter(Boolean);
+      const advanced=advEl.value.split(/\n+/).map(s=>s.trim()).filter(Boolean);
+      const featured=featuredEl.checked, published=publishedEl.checked;
+      if(!home || !away || !when){ formMsg.textContent='Home, Away, and Date/Time are required.'; return null; }
+      return { league, when, home, away, category, basic, advanced, featured, published };
+    }
+    function resetForm(){
+      editingId=null; formTitle.textContent='Create Fixture';
+      leagueEl.value=''; whenEl.value=''; homeEl.value=''; awayEl.value='';
+      categoryEl.value='basic';
+      basic1El.value=''; basic2El.value=''; basic3El.value='';
+      advEl.value=''; featuredEl.checked=false; publishedEl.checked=true; formMsg.textContent='';
+    }
+    function toInputDate(d){ const pad=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+    function toMillis(v){ return v && v.seconds ? v.seconds*1000 : Number(v||0); }
+    function formatLocal(ms){ const d=new Date(ms); return d.toLocaleString([], {year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'}); }
+    function escapeHtml(s=''){ return String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+    function showToast(text){ toast.textContent=text; toast.style.display='block'; setTimeout(()=>toast.style.display='none', 1600); }
+  </script>
+</body>
+</html>
+
